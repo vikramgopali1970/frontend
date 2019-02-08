@@ -1,0 +1,20 @@
+.cardShadow{
+    box-shadow: 0 7px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+.inMiddle{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 94vh;
+    background-color: navajowhite;
+}
+
+.username{
+    margin-top: 1rem !important;
+}
+
+.password{
+    margin-top: 2rem !important;
+}
