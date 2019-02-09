@@ -4,7 +4,7 @@ import {Form, Button, Container, Row, Col, Card, Modal} from 'react-bootstrap';
 import './Login.css';
 import { createPost,verifyUserFetch } from '../../Actions/index';
 
-const mapStateToProps = (state) => ({ login: state })
+const mapStateToProps = (state) => ({ login: state });
 
 const mapDispatchToProps = dispatch => ({
     createPost: (post) => dispatch(createPost(post)),
@@ -36,7 +36,6 @@ class Login extends React.Component{
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
         let status = nextProps.login.LoginReducer.json.data.status;
         if(status){
             this.props.history.push('/dashboard')
@@ -55,7 +54,6 @@ class Login extends React.Component{
     }
 
     handleShow() {
-        console.log("opening");
         this.setState({ show: true });
     }
 

@@ -7,10 +7,8 @@ const reducer = (state = [], action) => {
         case LOGIN_REQUEST_POST:
             return { ...state, loading: true };
         case LOGIN_REQUEST_RECEIVE:
-            console.log(action);
             return { ...state, json: action, loading: false };
         case VERIFY_LOGIN:
-            console.log(action);
             return { ...state, json: action, loading: false };
         default:
             return state;

@@ -9,7 +9,6 @@ export const VERIFY_LOGIN = "VERIFY_LOGIN";
 const apiUrl =`http://localhost:8000`;
 
 export const createPostSuccess =  (data) => {
-    console.log(data);
     return {
         type: LOGIN_REQUEST_RECEIVE,
         data
@@ -18,11 +17,9 @@ export const createPostSuccess =  (data) => {
 
 
 export const createPost = (loginData) => {
-    console.log(loginData);
     return (dispatch) => {
         return axios.post(`${apiUrl}/login`, loginData)
             .then(response => {
-                console.log(response.data);
                 setCookie("company",response.data.token,1);
                 dispatch(createPostSuccess(response.data));
             })
@@ -33,7 +30,6 @@ export const createPost = (loginData) => {
 };
 
 export const goDashBoard =  (data) => {
-    console.log("route",data);
     return {
         type: LOGIN_REQUEST_RECEIVE,
         payload: data
@@ -41,7 +37,6 @@ export const goDashBoard =  (data) => {
 };
 
 export const verifyUser =  (data) => {
-    console.log(data);
     return {
         type: LOGIN_REQUEST_RECEIVE,
         payload: data
@@ -50,13 +45,10 @@ export const verifyUser =  (data) => {
 
 
 export const verifyUserFetch = (userData) => {
-    console.log(userData);
     return (dispatch) => {
         return axios.get(`${apiUrl}/dashboard`, userData)
             .then(response => {
                 let apiResponse = dispatch(verifyUser(response.data));
-                console.log("looking",apiResponse);
-
                 return apiResponse;
             })
             .catch(error => {

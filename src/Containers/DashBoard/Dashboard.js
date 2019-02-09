@@ -13,30 +13,7 @@ class Dashboard extends React.Component{
     constructor(props) {
         super(props);
         this.state={
-            data : [{
-                n:1,
-                fn:'a',
-                ln : 'z',
-                un : 'e'
-            },
-                {
-                    n:2,
-                    fn:'b',
-                    ln : 'y',
-                    un : 'i'
-                },
-                {
-                    n:3,
-                    fn:'c',
-                    ln : 'x',
-                    un : 'f'
-                },
-                {
-                    n:4,
-                    fn:'d',
-                    ln : 'w',
-                    un : 'h'
-                }],
+            data : [],
             pagination : {
                 currPage : 1,
                 sInd : 0,
@@ -47,33 +24,32 @@ class Dashboard extends React.Component{
         this.orderCategory = this.orderCategory.bind(this);
         this.orderUsername = this.orderUsername.bind(this);
         this.orderProjectTitle = this.orderProjectTitle.bind(this);
+        this.selectPage = this.selectPage.bind(this);
     }
 
 
-    orderProject(data){
+    orderProject(){
         this.setState({
             data : _.sortBy(this.state.data,"date_starts")
         });
     }
-    orderCategory(data){
+    orderCategory(){
         this.setState({
-            data : _.sortBy(this.state.data,"ln")
+            data : _.sortBy(this.state.data,"category")
         });
     }
-    orderUsername(data){
+    orderUsername(){
         this.setState({
             data : _.sortBy(this.state.data,"username")
         });
     }
-    orderProjectTitle(data){
-        console.log("hehehehe",data);
+    orderProjectTitle(){
         this.setState({
             data : _.sortBy(this.state.data,"project_title")
         });
     }
 
-    handleRemove(num){
-        console.log(num);
+    selectPage(num){
         this.setState({
             pagination : {
                 currPage : num,
@@ -87,24 +63,21 @@ class Dashboard extends React.Component{
         let items = [];
         for (let number = 1; number <= this.state.data.length/2; number++) {
             items.push(
-                <Pagination.Item onClick={()=>{this.handleRemove(number)}} key={number} active={number === this.state.pagination.currPage}>
+                <Pagination.Item onClick={()=>{this.selectPage(number)}} key={number} active={number === this.state.pagination.currPage}>
                     {number}
                 </Pagination.Item>,
             );
         }
-        console.log(this.state.data);
         let variant = "Secondary";
-        // this.state.data) = _.sortBy(this.state.data), 'un');
-        console.log(this.state.data);
         let rows =[];
         for (let i = this.state.pagination.sInd; i <= this.state.pagination.eInd ;i++){
-            let rowID = `row${i}`
-            let cell = []
+            let rowID = `row${i}`;
+            let cell = [];
             let cellID = 0;
             cell.push(<td key={cellID++} id={cellID}>{this.state.data[i]["username"]}</td>)
             cell.push(<td key={cellID++} id={cellID}>{this.state.data[i]["project_title"]}</td>)
+            cell.push(<td key={cellID++} id={cellID}>{this.state.data[i]["category"]}</td>)
             cell.push(<td key={cellID++} id={cellID}>{this.state.data[i]["date_starts"]}</td>)
-            // cell.push(<td key={cellID++} id={cellID}>{this.state.data[i]["un"]}</td>)
             rows.push(<tr key={i} id={rowID}>{cell}</tr>)
         }
         return(
@@ -155,12 +128,7 @@ class Dashboard extends React.Component{
     }
 
     componentWillMount() {
-        console.log("came here",this.state);
-        // const {dispatch} = this.props;
-        // dispatch(verifyUserFetch(this.state));
-        //dispatch(push('/about')); //to navigate to a different route
         axios.get(`${apiUrl}/dashboard`).then(data=>{
-            console.log("aaaaaa",data.data.status);
             this.setState({
                 data:data.data.status
             })
