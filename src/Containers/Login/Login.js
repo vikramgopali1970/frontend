@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Form, Button, Container, Row, Col, Card} from 'react-bootstrap';
+import {Form, Button, Container, Row, Col, Card, Modal} from 'react-bootstrap';
 import './Login.css';
 import { createPost,verifyUserFetch } from '../../Actions/index';
 
-const mapStateToProps = (state) => ({ channel: state })
+const mapStateToProps = (state) => ({ login: state })
 
 const mapDispatchToProps = dispatch => ({
     createPost: (post) => dispatch(createPost(post)),
@@ -19,9 +19,10 @@ class Login extends React.Component{
         this.state = {
             username:'',
             password:'',
-            data:'',
+            show:false
         };
         this.updateField = this.updateField.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     };
 
     createPost = (event) => {
@@ -35,10 +36,27 @@ class Login extends React.Component{
     }
 
     componentWillReceiveProps(nextProps){
-        let newState = {};
-        newState["data"] = nextProps.channel.LoginReducer.json.payload;
-        this.setState(newState);
-        this.props.history.push('/dashboard')
+        console.log(nextProps);
+        let status = nextProps.login.LoginReducer.json.data.status;
+        if(status){
+            this.props.history.push('/dashboard')
+        }else{
+            this.handleShow();
+        }
+
+    }
+
+    handleClose() {
+        this.setState({
+            username:'',
+            password:'',
+            show:false
+        });
+    }
+
+    handleShow() {
+        console.log("opening");
+        this.setState({ show: true });
     }
 
     render(){
@@ -52,12 +70,12 @@ class Login extends React.Component{
                                 <Form>
                                     <Form.Group controlId="formBasicEmail" className={"username"}>
                                         <Form.Label>Username</Form.Label>
-                                        <Form.Control name="username" onChange={this.updateField} type="text" placeholder="Enter username" />
+                                        <Form.Control name="username" onChange={this.updateField} value={this.state.username} type="text" placeholder="Enter username" />
                                     </Form.Group>
 
                                     <Form.Group controlId="formBasicPassword" className={"password"}>
                                         <Form.Label>Password</Form.Label>
-                                        <Form.Control name="password" password="password" onChange={this.updateField} type="password" placeholder="Password" />
+                                        <Form.Control name="password" password="password" onChange={this.updateField} value={this.state.password} type="password" placeholder="Password" />
                                     </Form.Group>
                                     <Button onClick={this.createPost} variant="dark" className={"float-right"}>
                                         Login
@@ -68,6 +86,19 @@ class Login extends React.Component{
                     </Col>
                 </Row>
             </Container>
+
+
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Error..!!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>The username or password entered is wrong. Please check again.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleClose}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
         </div>
         )
     }

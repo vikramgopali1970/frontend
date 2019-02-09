@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {setCookie} from "../cookie";
 // import history from '../History';
 export const LOGIN_REQUEST_POST = "LOGIN_REQUEST_POST";
 export const LOGIN_REQUEST_RECEIVE = "LOGIN_REQUEST_RECEIVE";
@@ -11,7 +12,7 @@ export const createPostSuccess =  (data) => {
     console.log(data);
     return {
         type: LOGIN_REQUEST_RECEIVE,
-        payload: data
+        data
     }
 };
 
@@ -21,6 +22,8 @@ export const createPost = (loginData) => {
     return (dispatch) => {
         return axios.post(`${apiUrl}/login`, loginData)
             .then(response => {
+                console.log(response.data);
+                setCookie("company",response.data.token,1);
                 dispatch(createPostSuccess(response.data));
             })
             .catch(error => {
@@ -52,7 +55,7 @@ export const verifyUserFetch = (userData) => {
         return axios.get(`${apiUrl}/dashboard`, userData)
             .then(response => {
                 let apiResponse = dispatch(verifyUser(response.data));
-                // console.log("looking",apiResponse);
+                console.log("looking",apiResponse);
 
                 return apiResponse;
             })

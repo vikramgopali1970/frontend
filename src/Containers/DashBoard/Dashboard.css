@@ -2,3 +2,12 @@
     background-color: navajowhite;
     height: 94vh;
 }
+
+.contents{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 94vh;
+    background-color: navajowhite;
+}
